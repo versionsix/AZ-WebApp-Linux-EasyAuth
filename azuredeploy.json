@@ -1,0 +1,61 @@
+{  
+   "$schema":"http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+   "contentVersion":"1.0.0.0",
+   "parameters":{  
+      "siteName":{  
+         "type":"string",
+         "metadata":{  
+            "description":"Name of azure web app"
+         }
+      }
+   },
+   "variables":{  
+      "databaseName":"[concat(parameters('siteName'), 'database')]",
+      "serverName":"[concat(parameters('siteName'), 'mysqlserver')]",
+      "hostingPlanName":"[concat(parameters('siteName'), 'serviceplan')]"
+   },
+   "resources":[  
+      {  
+         "type":"Microsoft.Web/sites",
+         "name":"[parameters('siteName')]",
+         "properties":{  
+            "siteConfig":{  
+               "linuxFxVersion":"php|7.0",
+               "connectionStrings":[  
+                  {  
+                     "name":"defaultConnection",
+                     "ConnectionString":"[concat('Database=', variables('databaseName'), ';Data Source=', variables('serverName') ,'.mysql.database.azure.com;User Id=',parameters('administratorLogin'),'@',variables('serverName') ,';Password=',parameters('administratorLoginPassword'))]",
+                     "type":"MySql"
+                  }
+               ]
+            },
+            "name":"[parameters('siteName')]",
+            "serverFarmId":"[variables('hostingPlanName')]",
+            "hostingEnvironment":""
+         },
+         "apiVersion":"2016-08-01",
+         "location":"[resourceGroup().location]",
+         "dependsOn":[  
+            "[variables('hostingPlanName')]"
+         ]
+      },
+      {  
+         "apiVersion":"2016-09-01",
+         "name":"[variables('hostingPlanName')]",
+         "type":"Microsoft.Web/serverfarms",
+         "location":"[resourceGroup().location]",
+         "properties":{  
+            "name":"[variables('hostingPlanName')]",
+            "workerSizeId":"1",
+            "reserved":true,
+            "numberOfWorkers":"1",
+            "hostingEnvironment":""
+         },
+         "sku":{  
+            "Tier":"Standard",
+            "Name":"S1"
+         },
+         "kind":"linux"
+      }
+   ]
+}
