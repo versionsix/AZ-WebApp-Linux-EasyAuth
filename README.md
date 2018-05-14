@@ -14,7 +14,7 @@ Test locally:
 Shell locally:
 
 > `docker ps` => get *< CONTAINER ID >*
-> 
+
 > `docker exec -it < CONTAINER ID > /bin/bash`
 
 ---
