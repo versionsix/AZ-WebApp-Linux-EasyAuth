@@ -1,0 +1,4 @@
+/home/site/wwwroot/*
+!/home/site/wwwroot/.gitkeep
+/home/LogFiles/*
+!/home/LogFiles/.gitkeep
