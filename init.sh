@@ -11,9 +11,9 @@ eval $(printenv | awk -F= '{print "export " $1"="$2 }' >> /etc/profile)
 source /etc/apache2/envvars
 
 file1="/home/site/wwwroot/hostingstart.html"
-if [ ! -f "$file1" ]
+if [ -f "$file1" ]
 then
-    /usr/bin/post_deploy.sh
+    /usr/local/bin/post_deploy.sh
 fi
 
 apachectl -DFOREGROUND

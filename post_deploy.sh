@@ -11,3 +11,14 @@
 # in the future we also touch `/home/site/wwwroot/.deployed`
 # to prevent doing running the script a second time.
 
+file2="/home/site/wwwroot/.deployed"
+
+rm /home/site/wwwroot/hostingstart.html
+
+if [ ! -f "$file2" ]
+then
+    echo "New deployment, running post deployment script"
+    touch "$file2"
+    cp -a /code/. /home/site/wwwroot/
+fi
+
